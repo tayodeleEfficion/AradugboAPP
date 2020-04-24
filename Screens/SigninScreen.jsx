@@ -139,12 +139,12 @@ const LoginScreen = ({ navigation }) => {
         </View>
 
         <TouchableOpacity onPress={() => navigation.navigate("password")}>
-          <Text style={{ color: "#694fad", marginTop: 15 }}>
+          <Text style={{ color: "#003f5c", marginTop: 15 }}>
             Forgot password? Reset
           </Text>
         </TouchableOpacity>
         <View style={styles.button}>
-          <LinearGradient colors={["#694fad", "#694fad"]} style={styles.signIn}>
+          <LinearGradient colors={["#003f5c", "#003f5c"]} style={styles.signIn}>
             <Text
               style={[
                 styles.textSign,
@@ -163,7 +163,7 @@ const LoginScreen = ({ navigation }) => {
           <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
             <View style={{ flexDirection: "row" }}>
               <Text>Don't Have An Account ? </Text>
-              <Text style={{ color: "#694fad" }}>Sign Up</Text>
+              <Text style={{ color: "#003f5c" }}>Sign Up</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
@@ -199,7 +199,7 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#694fad",
+    backgroundColor: "#003f5c",
   },
   header: {
     flex: 1,

@@ -92,7 +92,7 @@ const SignupScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor='#1f65ff' barStyle='light-content' />
+      <StatusBar backgroundColor='#003f5c' barStyle='light-content' />
       <View style={styles.header}>
         <Text style={styles.text_header}>Aradugbo</Text>
         <Text style={styles.text_header}>Community App</Text>
@@ -148,7 +148,7 @@ const SignupScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <View style={styles.button}>
-          <LinearGradient colors={["#694fad", "#694fad"]} style={styles.signIn}>
+          <LinearGradient colors={["#003f5c", "#003f5c"]} style={styles.signIn}>
             <Text
               style={[
                 styles.signIn,
@@ -165,7 +165,7 @@ const SignupScreen = ({ navigation }) => {
             style={[
               styles.signIn,
               {
-                borderColor: "#694fad",
+                borderColor: "#003f5c",
                 borderWidth: 1,
                 marginTop: 10,
               },
@@ -173,7 +173,7 @@ const SignupScreen = ({ navigation }) => {
           >
             <View style={{ flexDirection: "row" }}>
               <Text>Already Have An Account ? </Text>
-              <Text style={{ color: "#694fad" }}>Sign In</Text>
+              <Text style={{ color: "#003f5c" }}>Sign In</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -185,7 +185,7 @@ const SignupScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#694fad",
+    backgroundColor: "#003f5c",
   },
   header: {
     flex: 1,

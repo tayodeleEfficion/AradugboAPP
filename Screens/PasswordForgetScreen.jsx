@@ -70,7 +70,7 @@ const PasswordForgetSreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor='#009387' barStyle='light-content' />
+      <StatusBar backgroundColor='#003f5c' barStyle='light-content' />
       <View style={styles.header}>
         <Text style={styles.text_header}>Aradugbo</Text>
         <Text style={styles.text_header}>Community App</Text>
@@ -94,14 +94,14 @@ const PasswordForgetSreen = ({ navigation }) => {
             style={[
               styles.signIn,
               {
-                borderColor: "#009387",
+                borderColor: "#003f5c",
                 borderWidth: 1,
                 marginTop: 10,
               },
             ]}
           >
             <View>
-              <Text style={{ color: "#009387" }}>Password Reset</Text>
+              <Text style={{ color: "#003f5c" }}>Password Reset</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -113,7 +113,7 @@ const PasswordForgetSreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#009387",
+    backgroundColor: "#003f5c",
   },
   header: {
     flex: 1,
