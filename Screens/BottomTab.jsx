@@ -1,19 +1,20 @@
 import React from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import DetailScreen from "./DetailsScreen";
-import "react-native-paper";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "./HomeScreen";
 import ExploreScreen from "./ExploreScreen";
 import ProfileScreen from "./Profilescreen";
 import Icon from "react-native-vector-icons/Ionicons";
+
 const Tab = createMaterialBottomTabNavigator();
 const HomeStack = createStackNavigator();
+
 const HomeStackScreen = ({ navigation }) => {
   return (
     <HomeStack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: "#009387" },
+        headerStyle: { backgroundColor: "blue" },
         headerTintColor: "#fff",
       }}
     >
@@ -25,7 +26,7 @@ const HomeStackScreen = ({ navigation }) => {
             <Icon.Button
               name='ios-menu'
               size={25}
-              backgroundColor='#009367'
+              backgroundColor='blue'
               onPress={() => navigation.toggleDrawer()}
             ></Icon.Button>
           ),
@@ -39,7 +40,7 @@ const HomeStackScreen = ({ navigation }) => {
             <Icon.Button
               name='ios-menu'
               size={25}
-              backgroundColor='#009367'
+              backgroundColor='blue'
               onPress={() => navigation.toggleDrawer()}
             ></Icon.Button>
           ),
@@ -51,17 +52,13 @@ const HomeStackScreen = ({ navigation }) => {
 
 const BottomTab = ({ navigation }) => {
   return (
-    <Tab.Navigator
-      initialRouteName='Home'
-      activeColor='#fff'
-      style={{ backgroundColor: "tomato" }}
-    >
+    <Tab.Navigator activeColor='#fff'>
       <Tab.Screen
         name='Home'
         component={HomeStackScreen}
         options={{
-          tabBarLabel: "Home",
-          tabBarColor: "green",
+          tabBarLabel: "Aradugbo",
+          tabBarColor: "#009387",
           tabBarIcon: ({ color }) => (
             <Icon name='ios-home' color={color} size={26} />
           ),
@@ -72,7 +69,7 @@ const BottomTab = ({ navigation }) => {
         component={ExploreScreen}
         options={{
           tabBarLabel: "Explore",
-          tabBarColor: "#1f65ff",
+          tabBarColor: "#009387",
           tabBarIcon: ({ color }) => (
             <Icon name='ios-aperture' color={color} size={26} />
           ),
@@ -83,7 +80,7 @@ const BottomTab = ({ navigation }) => {
         component={ProfileScreen}
         options={{
           tabBarLabel: "Profile",
-          tabBarColor: "#694tab",
+          tabBarColor: "#009387",
           tabBarIcon: ({ color }) => (
             <Icon name='ios-person' color={color} size={26} />
           ),

@@ -88,7 +88,7 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor='#009387' barStyle='light-content' />
+      <StatusBar backgroundColor='#1f65ff' barStyle='light-content' />
       <View style={styles.header}>
         <Text style={styles.text_header}>Aradugbo</Text>
         <Text style={styles.text_header}>Community App</Text>
@@ -139,12 +139,12 @@ const LoginScreen = ({ navigation }) => {
         </View>
 
         <TouchableOpacity onPress={() => navigation.navigate("password")}>
-          <Text style={{ color: "#009387", marginTop: 15 }}>
+          <Text style={{ color: "#1f65ff", marginTop: 15 }}>
             Forgot password? Reset
           </Text>
         </TouchableOpacity>
         <View style={styles.button}>
-          <LinearGradient colors={["#08d4c4", "#01ab9d"]} style={styles.signIn}>
+          <LinearGradient colors={["#1f65ff", "#1f65ff"]} style={styles.signIn}>
             <Text
               style={[
                 styles.textSign,
@@ -163,7 +163,7 @@ const LoginScreen = ({ navigation }) => {
           <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
             <View style={{ flexDirection: "row" }}>
               <Text>Don't Have An Account ? </Text>
-              <Text style={{ color: "#009387" }}>Sign Up</Text>
+              <Text style={{ color: "#1f65ff" }}>Sign Up</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
@@ -199,7 +199,7 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#009387",
+    backgroundColor: "#1f65ff",
   },
   header: {
     flex: 1,

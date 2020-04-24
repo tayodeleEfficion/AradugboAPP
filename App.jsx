@@ -16,6 +16,7 @@ import SettingScreen from "./Screens/SettingScreen";
 import BookmarkScreen from "./Screens/Bookmarkscreen";
 import RootStackscreen from "./Screens/RootStackScreen";
 import { AuthContext } from "./Components/Context";
+import { AsyncStorage } from "react-native";
 
 const Drawer = createDrawerNavigator();
 
@@ -33,8 +34,6 @@ const Drawer = createDrawerNavigator();
 
 // firebase.initializeApp(firebaseConfig);
 const App = () => {
-  // const [isLoading, setIsLoading] = React.useState(true);
-  // const [userToken, setUserToken] = React.useState(null);
   const initialLoginState = {
     isLoading: true,
     email: "",
@@ -83,17 +82,28 @@ const App = () => {
 
   const authContext = React.useMemo(
     () => ({
-      SignIn: (email, password) => {
+      SignIn: async (email, password) => {
         let userToken;
         userToken = null;
 
         if (email === "email" && password === "pass") {
-          userToken = "olumide";
+          try {
+            userToken = "olumide";
+            await AsyncStorage.setItem("UserToke", userToken);
+          } catch (error) {
+            console.log(error);
+          }
         }
         // console.log("user token :", userToken);
         dispatch({ type: "LOGIN", id: email, token: userToken });
       },
-      SignOut: () => {
+      SignOut: async () => {
+        try {
+          userToken = "olumide";
+          await AsyncStorage.removeItem("UserToke");
+        } catch (error) {
+          console.log(error);
+        }
         dispatch({ type: "LOGOUT" });
       },
       SignUp: () => {
@@ -105,10 +115,14 @@ const App = () => {
   );
 
   useEffect(() => {
-    setTimeout(() => {
-      userToken = "fgkj";
-      // console.log("user token :", userToken);
-      dispatch({ type: "REGISTER", token: userToken });
+    setTimeout(async () => {
+      userToken = "";
+      try {
+        userToken = await AsyncStorage.getItem("UserToke");
+      } catch (error) {
+        console.log(error);
+      }
+      dispatch({ type: "RETRIEVE_TOKEN", token: userToken });
     }, 1000);
   }, []);
 
