@@ -2,7 +2,7 @@ import React from "react";
 import {} from "@react-navigation/stack";
 import { withFormik } from "formik";
 import Icon from "react-native-vector-icons/FontAwesome";
-import * as firebase from "firebase";
+// import * as firebase from "firebase";
 import {
   View,
   Text,
@@ -18,6 +18,7 @@ import * as Animatable from "react-native-animatable";
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
+import { AuthContext } from "../Components/Context";
 
 const LoginScreen = ({ navigation }) => {
   const [data, setData] = React.useState({
@@ -28,26 +29,28 @@ const LoginScreen = ({ navigation }) => {
   });
 
   //firebase email and password signin
-  const SignInWithEmail = () => {
-    const { email, password } = data;
-    try {
-      if (email === null || password.length < 8) {
-        alert(
-          "Email field cannot be empty and Password must be atleast 8 characters"
-        );
-        return;
-      } else {
-        firebase
-          .auth()
-          .signInWithEmailAndPassword(email, password)
-          .then((user) => {
-            console.log(user);
-          });
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  // const SignInWithEmail = () => {
+  //   const { email, password } = data;
+  //   try {
+  //     if (email === null || password.length < 8) {
+  //       alert(
+  //         "Email field cannot be empty and Password must be atleast 8 characters"
+  //       );
+  //       return;
+  //     } else {
+  //       firebase
+  //         .auth()
+  //         .signInWithEmailAndPassword(email, password)
+  //         .then((user) => {
+  //           console.log(user);
+  //         });
+  //     }
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // };
+
+  const { SignIn } = React.useContext(AuthContext);
 
   const textInputChange = (val) => {
     if (val.length !== 0) {
@@ -77,6 +80,10 @@ const LoginScreen = ({ navigation }) => {
       ...data,
       secureTextEntry: !data.secureTextEntry,
     });
+  };
+
+  const handleLogin = (email, password) => {
+    SignIn(email, password);
   };
 
   return (
@@ -145,7 +152,9 @@ const LoginScreen = ({ navigation }) => {
                   color: "#fff",
                 },
               ]}
-              onPress={() => SignInWithEmail()}
+              onPress={() => {
+                handleLogin(data.email, data.password);
+              }}
             >
               Sign In
             </Text>
