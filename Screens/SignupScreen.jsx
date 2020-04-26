@@ -39,10 +39,6 @@ const SignupScreen = ({ navigation }) => {
       } else {
         firebase.auth().createUserWithEmailAndPassword(email, password);
       }
-      setData({
-        email: "",
-        password: "",
-      });
     } catch (error) {
       alert(error.message);
     }

@@ -15,6 +15,7 @@ import * as Animatable from "react-native-animatable";
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
+import * as firebase from "firebase";
 
 const PasswordForgetSreen = ({ navigation }) => {
   const [data, setData] = React.useState({
@@ -68,6 +69,17 @@ const PasswordForgetSreen = ({ navigation }) => {
     });
   };
 
+  const onPressReset = () => {
+    const { email, password } = data;
+    firebase
+      .auth()
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        alert("password reset email has been sent");
+      })
+      .catch((error) => alert(error.message));
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor='#003f5c' barStyle='light-content' />
@@ -99,6 +111,7 @@ const PasswordForgetSreen = ({ navigation }) => {
                 marginTop: 10,
               },
             ]}
+            onPress={() => onPressReset()}
           >
             <View>
               <Text style={{ color: "#003f5c" }}>Password Reset</Text>

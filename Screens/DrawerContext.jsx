@@ -13,13 +13,20 @@ import {
   Switch,
 } from "react-native-paper";
 import { AuthContext } from "../Components/Context";
+import * as firebase from "firebase";
 
 export function DrawerContent(props) {
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
-  const { SignOut } = React.useContext(AuthContext);
+  // const { SignOut } = React.useContext(AuthContext);
+
   const toggleTheme = () => {
     setIsDarkTheme(!isDarkTheme);
   };
+
+  const onSignOutPressed = () => {
+    firebase.auth().signOut();
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
@@ -123,9 +130,7 @@ export function DrawerContent(props) {
             <Icon name='exit-to-app' color={color} size={size} />
           )}
           label='sign Out'
-          onPress={() => {
-            SignOut();
-          }}
+          onPress={() => onSignOutPressed()}
         />
       </Drawer.Section>
     </View>
