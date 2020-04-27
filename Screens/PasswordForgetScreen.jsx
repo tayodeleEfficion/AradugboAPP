@@ -75,7 +75,7 @@ const PasswordForgetSreen = ({ navigation }) => {
       .auth()
       .sendPasswordResetEmail(email)
       .then(() => {
-        alert("password reset email has been sent");
+        alert("pass word reset email has been sent");
       })
       .catch((error) => alert(error.message));
   };

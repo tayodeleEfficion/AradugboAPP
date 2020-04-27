@@ -3,6 +3,7 @@ import {} from "@react-navigation/stack";
 import { withFormik } from "formik";
 import Icon from "react-native-vector-icons/FontAwesome";
 import * as firebase from "firebase";
+import * as Facebook from "expo-facebook";
 import {
   View,
   Text,
@@ -28,6 +29,29 @@ const LoginScreen = ({ navigation }) => {
     check_textInputChange: false,
     secureTextEntry: true,
   });
+
+  const loginWithFacebook = async () => {
+    await Facebook.initializeAsync("2822660764437162");
+    const {
+      type,
+      token,
+      expires,
+      permissions,
+      declinedPermissions,
+    } = await Facebook.logInWithReadPermissionsAsync("2822660764437162", {
+      permissions: ["public_profile"],
+    });
+
+    if (type === "success") {
+      const credetial = firebase.auth.FacebookAuthProvider.credential(token);
+      firebase
+        .auth()
+        .signInWithCredential(credetial)
+        .catch((error) => {
+          alert(error.message);
+        });
+    }
+  };
 
   const onLoginPress = () => {
     const { email, password } = data;
@@ -159,14 +183,19 @@ const LoginScreen = ({ navigation }) => {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate("Signup")}
             style={[
               {
                 marginTop: 15,
               },
             ]}
           >
-            <Icon.Button name='facebook' backgroundColor='#3b5998'>
+            <Icon.Button
+              name='facebook'
+              backgroundColor='#3b5998'
+              onPress={() => {
+                loginWithFacebook();
+              }}
+            >
               Login with Facebook
             </Icon.Button>
           </TouchableOpacity>
