@@ -3,6 +3,9 @@ import {} from "@react-navigation/stack";
 import { withFormik } from "formik";
 import Icon from "react-native-vector-icons/FontAwesome";
 import * as firebase from "firebase";
+import * as Facebook from 'expo-facebook'; 
+import * as Google from 'expo-google-app-auth';
+import config from '../config'
 import {
   View,
   Text,
@@ -18,6 +21,10 @@ import * as Animatable from "react-native-animatable";
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
+
+
+
+
 
 const LoginScreen = ({ navigation }) => {
   const [data, setData] = React.useState({
@@ -78,6 +85,127 @@ const LoginScreen = ({ navigation }) => {
       secureTextEntry: !data.secureTextEntry,
     });
   };
+
+  //firebase google auth implementation
+  
+
+
+async function signInWithGoogleAsync() {
+  try {
+    const result = await Google.logInAsync({
+        iosClientId: `230930529555-tri3091mctu3395p0ihm4f3eskermd2d.apps.googleusercontent.com`,
+        androidClientId: `230930529555-jm9c9rjt2ekm3u252e25n88tv97u4djr.apps.googleusercontent.com`,
+        scopes: ['profile', 'email'],
+      });
+  
+      if (result.type === 'success') {
+        function isUserEqual(googleUser, firebaseUser) {
+          if (firebaseUser) {
+            var providerData = firebaseUser.providerData;
+            for (var i = 0; i < providerData.length; i++) {
+              if (providerData[i].providerId === firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
+                  providerData[i].uid === googleUser.getBasicProfile().getId()) {
+                // We don't need to reauth the Firebase connection.
+                return true;
+              }
+            }
+          }
+          return false;
+        }
+      
+        function onSignIn(googleUser) {
+          console.log('Google Auth Response', googleUser);
+          // We need to register an Observer on Firebase Auth to make sure auth is initialized.
+          var unsubscribe = firebase.auth().onAuthStateChanged(function(firebaseUser) {
+            unsubscribe();
+            // Check if we are already signed-in Firebase with the correct user.
+            if (!isUserEqual(googleUser, firebaseUser)) {
+              // Build Firebase credential with the Google ID token.
+              var credential = firebase.auth.GoogleAuthProvider.credential(
+                 googleUser.idToken,
+                 googleUser.accessToken,
+              );
+              // Sign in with credential from the Google user.
+              firebase
+              .auth().signInWithCredential(credential)
+              .then(function(result){
+                console.log('user signed in');
+                if(result.additionalUserInfo.isNewUser)
+                {
+      
+      
+              firebase
+              .database
+              .ref('/users'+ result.user.uid)
+              .set({
+                gmail: result.user.email,
+                profile_result: result.additionalUserInfo.profile.picture,
+                locale: result.additionalUserInfo.profile.locale,
+                first_name: result.additionalUserInfo.profile.given_name,
+                last_name: result.additionalUserInfo.profile.given_name,
+                created_at:Date.now()
+              })
+              .then(function(snapshot){
+              })
+            }else{
+              firebase
+                .database()
+                .ref('/users'+result.user.uid).update({
+                  last_logged_in:Date.now()
+                })
+            }
+      
+            
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                // The email of the user's account used.
+                var email = error.email;
+                // The firebase.auth.AuthCredential type that was used.
+                var credential = error.credential;
+                // ...
+              });
+            } else {
+              console.log('User already signed-in Firebase.');
+            }
+          });
+        }
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      return { error: true };
+    }
+  }
+  
+
+    
+    
+
+  async function signInWithFacebookAsync() {
+    try {
+      await Facebook.initializeAsync('261051115297989');
+      const {
+        type,
+        token,
+        expires,
+        permissions,
+        declinedPermissions,
+      } = await Facebook.logInWithReadPermissionsAsync({
+        permissions: ['public_profile'],
+      });
+      if (type === 'success') {
+        await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+        const credential = firebase.auth.FacebookAuthProvider.credential(token);
+        const facebookProfileData = await firebase.auth().signInWithCredential(credential);
+        this.onLoginSuccess.bind(this)
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`);
+    }
+  }
+  
+  
 
   return (
     <View style={styles.container}>
@@ -165,9 +293,11 @@ const LoginScreen = ({ navigation }) => {
               },
             ]}
           >
-            <Icon.Button name='facebook' backgroundColor='#3b5998'>
+         
+            <Icon.Button name='facebook' backgroundColor='#3b5998' onPress={() =>signInWithFacebookAsync()}> 
               Login with Facebook
             </Icon.Button>
+            
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.navigate("Signup")}
@@ -177,9 +307,11 @@ const LoginScreen = ({ navigation }) => {
               },
             ]}
           >
-            <Icon.Button name='google' backgroundColor='#FF3E30'>
+           
+            <Icon.Button name='google' backgroundColor='#FF3E30'onPress={() =>signInWithGoogleAsync()}>           
               Login with Google
             </Icon.Button>
+            
           </TouchableOpacity>
         </View>
       </Animatable.View>

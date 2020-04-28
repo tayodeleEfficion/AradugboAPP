@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "230930529555",
+    "firebase_url": "https://aradugbo-d80b4.firebaseio.com",
+    "project_id": "aradugbo-d80b4",
+    "storage_bucket": "aradugbo-d80b4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:230930529555:android:4e83f56d5cb1cde42d2ee6",
+        "android_client_info": {
+          "package_name": "com.AradugboApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "230930529555-4drqgll87af36vqch46mciuo1j7cnsrq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDh3gWSn5wJ5uKMxFFA1VlQqqnYUQQyHdk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "230930529555-4drqgll87af36vqch46mciuo1j7cnsrq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "230930529555-mmbi96fgr7qnb8thqgh1g2cu2quteebc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.AradugboApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

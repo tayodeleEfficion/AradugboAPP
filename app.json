@@ -23,8 +23,18 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "facebookScheme": "fb684399708713036",
+        "facebookAppId": "261051115297989",
+        "facebookDisplayName": "aradugbo",
     "ios": {
+      
       "supportsTablet": true
+      
+      
+    },
+    "android": {
+      "package": "com.AradugboApp"
+     
     }
   }
 }
