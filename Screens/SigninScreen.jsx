@@ -4,6 +4,8 @@ import { withFormik } from "formik";
 import Icon from "react-native-vector-icons/FontAwesome";
 import * as firebase from "firebase";
 import * as Facebook from "expo-facebook";
+import * as Google from "expo-google-sign-in";
+import { FACEBOOKCREDENTIAL } from "../Contanst/FBcredentials";
 import {
   View,
   Text,
@@ -31,22 +33,28 @@ const LoginScreen = ({ navigation }) => {
   });
 
   const loginWithFacebook = async () => {
-    await Facebook.initializeAsync("2822660764437162");
+    await Facebook.initializeAsync(FACEBOOKCREDENTIAL);
     const {
       type,
       token,
       expires,
       permissions,
       declinedPermissions,
-    } = await Facebook.logInWithReadPermissionsAsync("2822660764437162", {
+    } = await Facebook.logInWithReadPermissionsAsync(FACEBOOKCREDENTIAL, {
       permissions: ["public_profile"],
     });
 
     if (type === "success") {
-      const credetial = firebase.auth.FacebookAuthProvider.credential(token);
+      await firebase
+        .auth()
+        .setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+      const credential = firebase.auth.FacebookAuthProvider.credential(token);
+      const facebookProfileData = await firebase
+        .auth()
+        .signInWithCredential(credential);
       firebase
         .auth()
-        .signInWithCredential(credetial)
+        .signInWithCredential(credential)
         .catch((error) => {
           alert(error.message);
         });
@@ -200,14 +208,19 @@ const LoginScreen = ({ navigation }) => {
             </Icon.Button>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate("Signup")}
             style={[
               {
                 marginTop: 15,
               },
             ]}
           >
-            <Icon.Button name='google' backgroundColor='#FF3E30'>
+            <Icon.Button
+              name='google'
+              backgroundColor='#FF3E30'
+              onPress={() => {
+                signInWithGoogleAsync();
+              }}
+            >
               Login with Google
             </Icon.Button>
           </TouchableOpacity>
