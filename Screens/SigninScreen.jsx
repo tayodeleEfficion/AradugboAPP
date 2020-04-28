@@ -4,8 +4,9 @@ import { withFormik } from "formik";
 import Icon from "react-native-vector-icons/FontAwesome";
 import * as firebase from "firebase";
 import * as Facebook from "expo-facebook";
-import * as Google from "expo-google-sign-in";
+import * as Google from "expo-google-app-auth";
 import { FACEBOOKCREDENTIAL } from "../Contanst/FBcredentials";
+import { ANDROIDcLIENTID, IOSCLIENTID } from "../Contanst/GoogleCredetials";
 import {
   View,
   Text,
@@ -30,7 +31,33 @@ const LoginScreen = ({ navigation }) => {
     password: "",
     check_textInputChange: false,
     secureTextEntry: true,
+    isValidUser: true,
+    isValidPassword: true,
   });
+
+  const [name, setName] = React.useState(null);
+  const [photo, setPhoto] = React.useState(null);
+
+  const signInWithGoogleAsync = async () => {
+    try {
+      const result = await Google.logInAsync({
+        androidClientId: ANDROIDcLIENTID,
+        iosClientId: IOSCLIENTID,
+        scopes: ["profile", "email"],
+      });
+
+      if (result.type === "success") {
+        setName(result.user.name);
+        setPhoto(result.user.photoUrl);
+        console.log(result.user.photoUrl);
+        setSignin(true);
+      } else {
+        Alert.alert("Not found");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const loginWithFacebook = async () => {
     await Facebook.initializeAsync(FACEBOOKCREDENTIAL);
@@ -83,26 +110,37 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const textInputChange = (val) => {
-    if (val.length !== 0) {
+    if (val.trim().length >= 4) {
       setData({
         ...data,
         email: val,
         check_textInputChange: true,
+        isValidUser: true,
       });
     } else {
       setData({
         ...data,
         email: val,
         check_textInputChange: false,
+        isValidUser: false,
       });
     }
   };
 
   const handlePasswordChange = (val) => {
-    setData({
-      ...data,
-      password: val,
-    });
+    if (val.trim().length >= 8) {
+      setData({
+        ...data,
+        password: val,
+        isValidPassword: true,
+      });
+    } else {
+      setData({
+        ...data,
+        password: val,
+        isValidPassword: false,
+      });
+    }
   };
 
   const updateSecureTextEntry = () => {
@@ -110,6 +148,20 @@ const LoginScreen = ({ navigation }) => {
       ...data,
       secureTextEntry: !data.secureTextEntry,
     });
+  };
+
+  const handleValidUser = (val) => {
+    if (val.trim().length >= 4) {
+      setData({
+        ...data,
+        isValidUser: true,
+      });
+    } else {
+      setData({
+        ...data,
+        isValidUser: false,
+      });
+    }
   };
 
   return (
@@ -128,6 +180,7 @@ const LoginScreen = ({ navigation }) => {
             style={styles.textInput}
             autoCapitalize='none'
             onChangeText={(val) => textInputChange(val)}
+            onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
           />
           {data.check_textInputChange ? (
             <Animatable.View animation='bounceIn'>
@@ -135,6 +188,13 @@ const LoginScreen = ({ navigation }) => {
             </Animatable.View>
           ) : null}
         </View>
+        {data.isValidUser ? null : (
+          <Animatable.View animation='fadeInLeft' duration={500}>
+            <Text style={styles.errorMessage}>
+              Email must be greater than 4 characters
+            </Text>
+          </Animatable.View>
+        )}
 
         <Text
           style={[
@@ -163,6 +223,13 @@ const LoginScreen = ({ navigation }) => {
             )}
           </TouchableOpacity>
         </View>
+        {data.isValidPassword ? null : (
+          <Animatable.View animation='fadeInLeft' duration={500}>
+            <Text style={styles.errorMessage}>
+              password must be greater than 8 characters
+            </Text>
+          </Animatable.View>
+        )}
 
         <TouchableOpacity onPress={() => navigation.navigate("password")}>
           <Text style={{ color: "#003f5c", marginTop: 15 }}>
@@ -217,9 +284,7 @@ const LoginScreen = ({ navigation }) => {
             <Icon.Button
               name='google'
               backgroundColor='#FF3E30'
-              onPress={() => {
-                signInWithGoogleAsync();
-              }}
+              onPress={() => signInWithGoogleAsync()}
             >
               Login with Google
             </Icon.Button>
