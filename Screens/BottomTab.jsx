@@ -5,6 +5,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "./HomeScreen";
 import ExploreScreen from "./ExploreScreen";
 import ProfileScreen from "./Profilescreen";
+import PostScreen from "./Postscreen";
+import PhotoScreen from "./PhotoScreen"
 import Icon from "react-native-vector-icons/Ionicons";
 
 const Tab = createMaterialBottomTabNavigator();
@@ -83,6 +85,29 @@ const BottomTab = ({ navigation }) => {
           tabBarColor: "#009387",
           tabBarIcon: ({ color }) => (
             <Icon name='ios-person' color={color} size={26} />
+          ),
+        }}
+      />
+      
+      <Tab.Screen
+        name='Post'
+        component={PostScreen}
+        options={{
+          tabBarLabel: "Post",
+          tabBarColor: "#009387",
+          tabBarIcon: ({ color }) => (
+            <Icon name='ios-add-circle' color={color} size={26} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name='Photo'
+        component={PhotoScreen}
+        options={{
+          tabBarLabel: "Photo",
+          tabBarColor: "#009387",
+          tabBarIcon: ({ color }) => (
+            <Icon name='ios-add-circle' color={color} size={26} />
           ),
         }}
       />
