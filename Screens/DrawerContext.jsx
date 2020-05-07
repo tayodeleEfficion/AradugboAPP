@@ -4,6 +4,7 @@ import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import {
   Avatar,
+  useTheme,
   Title,
   Caption,
   Paragraph,
@@ -16,13 +17,8 @@ import { AuthContext } from "../Components/Context";
 import * as firebase from "firebase";
 
 export function DrawerContent(props) {
-  const [isDarkTheme, setIsDarkTheme] = React.useState(false);
   // const { SignOut } = React.useContext(AuthContext);
-
-  const toggleTheme = () => {
-    setIsDarkTheme(!isDarkTheme);
-  };
-
+  const paperTheme = useTheme();
   const onSignOutPressed = () => {
     firebase.auth().signOut();
   };
@@ -109,15 +105,11 @@ export function DrawerContent(props) {
             />
           </Drawer.Section>
           <Drawer.Section title='preferences'>
-            <TouchableRipple
-              onPress={() => {
-                toggleTheme();
-              }}
-            >
+            <TouchableRipple onPress={() => props.toggleTheme()}>
               <View style={styles.preference}>
                 <Text>Dark Theme</Text>
                 <View pointerEvents='none'>
-                  <Switch value={isDarkTheme} />
+                  <Switch value={paperTheme.dark} />
                 </View>
               </View>
             </TouchableRipple>

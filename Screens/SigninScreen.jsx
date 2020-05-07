@@ -24,6 +24,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
 import { AuthContext } from "../Components/Context";
+import { useTheme } from "react-native-paper";
 
 const LoginScreen = ({ navigation }) => {
   const [data, setData] = React.useState({
@@ -34,6 +35,7 @@ const LoginScreen = ({ navigation }) => {
     isValidUser: true,
     isValidPassword: true,
   });
+  const { colors } = useTheme();
 
   const [name, setName] = React.useState(null);
   const [photo, setPhoto] = React.useState(null);
@@ -41,18 +43,16 @@ const LoginScreen = ({ navigation }) => {
   const signInWithGoogleAsync = async () => {
     try {
       const result = await Google.logInAsync({
+        behavior: "web",
         androidClientId: ANDROIDcLIENTID,
         iosClientId: IOSCLIENTID,
         scopes: ["profile", "email"],
       });
 
       if (result.type === "success") {
-        setName(result.user.name);
-        setPhoto(result.user.photoUrl);
-        console.log(result.user.photoUrl);
-        setSignin(true);
+        return result.accessToken;
       } else {
-        Alert.alert("Not found");
+        return { cancelled: true };
       }
     } catch (e) {
       console.log(e);
@@ -171,13 +171,16 @@ const LoginScreen = ({ navigation }) => {
         <Text style={styles.text_header}>Aradugbo</Text>
         <Text style={styles.text_header}>Community App</Text>
       </View>
-      <Animatable.View animation='fadeInUpBig' style={styles.footer}>
-        <Text style={styles.text_footer}>Email</Text>
+      <Animatable.View
+        animation='fadeInUpBig'
+        style={[styles.footer, { backgroundColor: colors.background }]}
+      >
+        <Text style={[styles.text_footer, { color: colors.text }]}>Email</Text>
         <View style={styles.action}>
-          <FontAwesome name='user-o' color='#05375a' size={20} />
+          <FontAwesome name='user-o' color={colors.text} size={20} />
           <TextInput
             placeholder='Your Email'
-            style={styles.textInput}
+            style={[styles.textInput, { color: colors.text }]}
             autoCapitalize='none'
             onChangeText={(val) => textInputChange(val)}
             onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
@@ -200,6 +203,7 @@ const LoginScreen = ({ navigation }) => {
           style={[
             styles.text_footer,
             {
+              color: colors.text,
               marginTop: 35,
             },
           ]}
@@ -207,11 +211,11 @@ const LoginScreen = ({ navigation }) => {
           Password
         </Text>
         <View style={styles.action}>
-          <Feather name='lock' color='#05375a' size={20} />
+          <Feather name='lock' color={colors.text} size={20} />
           <TextInput
             placeholder='Your Password'
             secureTextEntry={data.secureTextEntry ? true : false}
-            style={styles.textInput}
+            style={[styles.textInput, { color: colors.text }]}
             autoCapitalize='none'
             onChangeText={(val) => handlePasswordChange(val)}
           />
